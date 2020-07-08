@@ -2,12 +2,15 @@ import "@babel/polyfill";
 
 $(document).ready(function(){
 
+   //Url from harry potter api
    const urlApi = 'http://hp-api.herokuapp.com/api/characters';
+   //Container for instanciate Shuffle JS
    const container = $('.my-shuffle-container');
 
    $.getJSON(
       urlApi, 
          function(data){
+            //Get and display data into DOM from api
             for(let i = 0; i < data.length; i++){
                const houseCondition = data[i].house ? data[i].house : "inconnu";
                const yearOfBirthCondition = data[i].yearOfBirth ? data[i].yearOfBirth : "Inconnu";
