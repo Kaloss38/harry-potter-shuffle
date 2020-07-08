@@ -12,7 +12,7 @@ $(document).ready(function(){
                const houseCondition = data[i].house ? data[i].house : "inconnu";
                const yearOfBirthCondition = data[i].yearOfBirth ? data[i].yearOfBirth : "Inconnu";
                $(container).append(`
-                  <div class="card col-sm-4" data-groups='["${houseCondition}", "${data[i].gender}"]' data-gender="${data[i].gender}" data-title="${data[i].name.toLowerCase()}" data-date-created="${data[i].yearOfBirth}">
+                  <div class="card col-sm-4" data-groups='[ "${houseCondition}", "${data[i].name.toLowerCase()}", "${data[i].gender}", "${data[i].yearOfBirth}"]' data-gender="${data[i].gender}" data-title="${data[i].name.toLowerCase()}" data-date-created="${data[i].yearOfBirth}">
                      <div class="card-body">
                      <h3 class="card-title">${data[i].name}</h5>
                      <p class="card-text" style="font-weight: bold">Maison</p>
@@ -53,7 +53,7 @@ $(document).ready(function(){
                   let radioValue = $(this).attr("value");
                   shuffleInstance.filter(function(container){
                      if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
-                        let groups = JSON.parse($(container).attr('data-groups'));
+                        const groups = JSON.parse($(container).attr('data-groups'));
                         const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
                         if (!isElementInCurrentGroup) {
                           return false;
@@ -79,13 +79,19 @@ $(document).ready(function(){
                                       return false;
                                     }
                                  }
-                                 
                                  return container.getAttribute('data-date-created')%2 == 0;
                               })
                            }
                         })
                      }
-                        return container.getAttribute('data-gender') == radioValue;
+                     if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
+                        const groups = JSON.parse($(container).attr('data-groups'));
+                        const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
+                        if (!isElementInCurrentGroup) {
+                           return false;
+                        }
+                     }
+                     return container.getAttribute('data-gender') == radioValue;
                   })
                }
             })
@@ -118,6 +124,7 @@ $(document).ready(function(){
                   }
                })
             })
+
             //Event range filter
             $("#slider-range").change(function(){
                let valMin;
@@ -135,15 +142,15 @@ $(document).ready(function(){
                        return false;
                      }
                   }
+
                   return $(container).attr('data-date-created') >= valMin && $(container).attr('data-date-created') <= valMax;
                 });
              });
+
             //Event search bar filter 
             $('#search-bar').on('keyup', function (e) { 
                const searchValue = e.target.value.toLowerCase().trim();
-               console.log($(container).attr('data-groups'))
                shuffleInstance.filter( function(container){
-
                   if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
                      const groups = JSON.parse($(container).attr('data-groups'));
                      const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
@@ -151,7 +158,6 @@ $(document).ready(function(){
                        return false;
                      }
                   }
-
                   const titleElement = $(container).attr('data-title')
                   const titleText = titleElement.toLowerCase().trim()
 
@@ -186,9 +192,19 @@ $(document).ready(function(){
                 shuffleInstance.sort(options);
              });
              
-            
+            function keepFilterGroup(container, shuffleInstance, Shuffle){
+               if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
+                  const groups = JSON.parse($(container).attr('data-groups'));
+                  const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
+                  if (!isElementInCurrentGroup) {
+                    return false;
+                  }
+               }
+            }
    })
 })
+
+
 
     
 
