@@ -1,4 +1,4 @@
-# Harry Potter JS - with Shuffle.js
+# Harry Potter JS App - with Shuffle.js
 
 Api use: [hp-api](http://hp-api.herokuapp.com/api/characters)
 
