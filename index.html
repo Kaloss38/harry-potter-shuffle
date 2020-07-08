@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="./node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css">
+    <link rel="stylesheet" href="./assets/styles/style.css">
+    <title>Harry Potter Shuffle</title>
+</head>
+<body>
+        "
+    <div class="container">
+        <img src="https://i.pinimg.com/originals/dd/91/7e/dd917eb793cf750e332a3996ec1e1088.png" alt="logo">
+        <div class="row d-inline justify-content-around">
+            <div class="button-section">
+                <button id="All" type="button" class="col-lg-2 btn btn-dark active">Tous</button>
+                <button id="Ravenclaw" type="button" class="col-lg-2 btn btn-primary">Serdaigle</button>
+                <button id="Slytherin" type="button" class="col-lg-2 btn btn-success">Serpentard</button>
+                <button id="Gryffindor" class="col-lg-2 btn btn-danger">Gryffondor</button>
+                <button id="Hufflepuff" class="col-lg-2 btn btn-warning">Poufsouffle</button>
+                <button id="inconnu" class="col-lg-2 btn btn-secondary">Aucune maison</button>
+            </div>
+        </div>
+        <br>
+        <div class="row input-search d-flex col-12">
+            <div class="col-8">
+                <label for="filters-search-input">Rechercher</label>
+                <input id="search-bar" type="search" placeholder="Entrez un nom ou prénom">
+                <form>
+                    <div class="form-group">
+                        <label id='label-range' for="formControlRange"></label>
+                        <br>
+                        <!-- <input type="range" min ="1900" max="2000" data-slider-value="[1900, 2000]" class="form-control-range" id="formControlRange"> -->
+                        <b>1900</b><input id="slider-range" type="text" /><b>2000</b>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="col-6">
+                <div class="input-group radio">
+                    <div class="input-group-prepend">
+                      <div class="input-group" data-toggle="buttons">
+                        <label> 
+                            <input type="radio" name="gender" value="male" aria-label="Radio button for following text input">
+                            <span>Garçons</span>
+                        </label>
+                        <label> 
+                            <input type="radio" name="gender" value="female" aria-label="Radio button for following text input">
+                            <span>Filles</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="radio-pop"></div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Trier par</label>
+                </div>
+                <select class="custom-select" id="select-sort">
+                  <option value="">Défaut</option>
+                  <option value="data-date-created">Date</option>
+                  <option value="data-title">Titre</option>
+                </select>
+              </div>
+        </div>
+        
+        <hr>
+        <div class="row my-shuffle-container">
+            <!-- Call shuffle content-->
+        </div>
+    </div>    
+    <!-- scripts-->    
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="./node_modules/shufflejs/dist/shuffle.min.js"></script>
+    <script src="./node_modules/bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+    <script src="dist/bundle.js"></script>
+</body>
+</html>

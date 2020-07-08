@@ -1,0 +1,55 @@
+body{
+  width: 100%;
+  background-image:url('https://i.pinimg.com/originals/b0/ff/1a/b0ff1a3520386aacce5cbad2986edc89.jpg');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+img{
+  width: 20%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1{
+  text-align: center;
+}
+
+li{
+  list-style: none;
+}
+.button-section{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+label{
+  color: white;
+}
+
+b{
+  color: white;
+}
+
+.my-shuffle-container{
+  margin-top: 50px;
+}
+
+.card{
+  color: white;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.card-title{
+  font-weight: bold
+}
+
+.input-search{
+  padding: 0;
+}
+
