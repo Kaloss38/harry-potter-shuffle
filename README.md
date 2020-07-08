@@ -1,6 +1,6 @@
 # Harry Potter JS - with Shuffle.js
 
-Api use: [hp-api](http://hp-api.herokuapp.com/api/)
+Api use: [hp-api](http://hp-api.herokuapp.com/api/characters)
 
 # Starting Pokedex
 
