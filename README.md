@@ -2,7 +2,7 @@
 
 Api use: [hp-api](http://hp-api.herokuapp.com/api/characters)
 
-# Starting Pokedex
+# Starting App
 
 - Import this repository
 
