@@ -96,7 +96,7 @@ $(document).ready(function(){
                   else{
                      $(this).addClass('active')
                      $('body').data('data-house', attrId);
-                     shuffleInstance.group = attrId;
+                     // shuffleInstance.group = attrId;
                      filter();
                      $('.radio [type=radio]').prop('checked', false)
                      $('#radio-pop').empty();
@@ -162,7 +162,7 @@ $(document).ready(function(){
                   const dataButton = $('body').data('data-house');
                   if(dataButton){
                      const titleElement = $(container).attr('data-groups')
-                     const titleText = titleElement ? titleElement.toLowerCase().trim() : "";
+                     const titleText = titleElement ? titleElement.trim() : "";
 
                      isElementInCurrentGroup &= titleText.indexOf(dataButton) !== -1;
                   }
