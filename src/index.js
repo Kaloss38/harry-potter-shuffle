@@ -15,21 +15,18 @@ $(document).ready(function(){
                const houseCondition = data[i].house ? data[i].house : "inconnu";
                const yearOfBirthCondition = data[i].yearOfBirth ? data[i].yearOfBirth : "Inconnu";
                $(container).append(`
-                  <div class="card col-sm-4" data-groups='[ "${houseCondition}", "${data[i].name.toLowerCase()}", "${data[i].gender}", "${data[i].yearOfBirth}"]' data-gender="${data[i].gender}" data-title="${data[i].name.toLowerCase()}" data-date-created="${data[i].yearOfBirth}">
+                  <div class="card col-12" data-groups='["${houseCondition}"]' data-gender="${data[i].gender}" data-title="${data[i].name.toLowerCase()}" data-date-created="${data[i].yearOfBirth} style="display: table;" >
                      <div class="card-body">
-                     <h3 class="card-title">${data[i].name}</h5>
-                     <p class="card-text" style="font-weight: bold">Maison</p>
-                     <p class="card-text"> ${houseCondition}</p>
-                     <p class="card-text" style="font-weight: bold">Genre</p>
-                     <p class="card-text"> ${data[i].gender}</p>
-                     <p class="card-text" style="font-weight: bold">Année de naissance</p>
-                     <p class="card-text"> ${yearOfBirthCondition}</p>
+                        <div class="card-text">${data[i].name}</div>
+                        <div class="card-text"> ${houseCondition}</div>
+                        <div class="card-text"> ${data[i].gender}</div>
+                        <div class="card-text"> ${yearOfBirthCondition}</div>
                      </div>
                   </div>
                `)
             }
 
-            //Slider range setting
+            //Slider range settings
             $('#label-range').text("Trier personnage par année: ");
             $("#slider-range").slider({
                min: 1900, 
@@ -54,14 +51,8 @@ $(document).ready(function(){
                if($(this).prop('checked', true)){
                   $('#radio-pop').empty();
                   let radioValue = $(this).attr("value");
-                  shuffleInstance.filter(function(container){
-                     if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
-                        const groups = JSON.parse($(container).attr('data-groups'));
-                        const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
-                        if (!isElementInCurrentGroup) {
-                          return false;
-                        }
-                     }
+                  $('body').data('filter-radio', radioValue)
+                  filter()
                      if(radioValue == "female"){
                         $('#radio-pop').empty();
                         $('#radio-pop').append(`
@@ -87,15 +78,7 @@ $(document).ready(function(){
                            }
                         })
                      }
-                     if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
-                        const groups = JSON.parse($(container).attr('data-groups'));
-                        const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
-                        if (!isElementInCurrentGroup) {
-                           return false;
-                        }
-                     }
-                     return container.getAttribute('data-gender') == radioValue;
-                  })
+                  
                }
             })
 
@@ -106,22 +89,15 @@ $(document).ready(function(){
                   const attrId = $(this).attr('id')
                   if($(this).attr('id') == 'All'){
                      $(this).addClass('active');
-                     shuffleInstance.filter( function(){
-                        if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
-                           const groups = JSON.parse($(container).attr('data-groups'));
-                           const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
-                           if (!isElementInCurrentGroup) {
-                             return false;
-                           }
-                        }
-                        return Shuffle.ALL_ITEMS
-                     })
-                     $('.radio [type=radio]').prop('checked', false)
+                     shuffleInstance.filter();
+                     $('.radio [type=radio]').prop('checked', false);
                      $('#radio-pop').empty();
                   }
                   else{
                      $(this).addClass('active')
-                     shuffleInstance.filter(attrId)
+                     $('body').data('data-house', attrId);
+                     shuffleInstance.group = attrId;
+                     filter();
                      $('.radio [type=radio]').prop('checked', false)
                      $('#radio-pop').empty();
                   }
@@ -134,38 +110,17 @@ $(document).ready(function(){
                let valMax;
 
                let valueTab = $(this).prop('value').split(',');
-               valMin = valueTab[0]
-               valMax = valueTab[1]
-               
-               shuffleInstance.filter(function (container) {
-                  if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
-                     const groups = JSON.parse($(container).attr('data-groups'));
-                     const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
-                     if (!isElementInCurrentGroup) {
-                       return false;
-                     }
-                  }
-
-                  return $(container).attr('data-date-created') >= valMin && $(container).attr('data-date-created') <= valMax;
-                });
+               valMin = valueTab[0];
+               valMax = valueTab[1];
+               $('body').data("filter-range", {min: valMin, max: valMax});
+               filter();
              });
 
             //Event search bar filter 
             $('#search-bar').on('keyup', function (e) { 
                const searchValue = e.target.value.toLowerCase().trim();
-               shuffleInstance.filter( function(container){
-                  if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
-                     const groups = JSON.parse($(container).attr('data-groups'));
-                     const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
-                     if (!isElementInCurrentGroup) {
-                       return false;
-                     }
-                  }
-                  const titleElement = $(container).attr('data-title')
-                  const titleText = titleElement.toLowerCase().trim()
-
-                  return titleText.indexOf(searchValue) !== -1;
-               })
+               $('body').data('data-search', searchValue);
+               filter();
             });
 
             //Event select sort
@@ -195,14 +150,52 @@ $(document).ready(function(){
                 shuffleInstance.sort(options);
              });
              
-            function keepFilterGroup(container, shuffleInstance, Shuffle){
-               if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
+            function filter(){
+               shuffleInstance.filter(function(container){
+                  let isElementInCurrentGroup = true;
                   const groups = JSON.parse($(container).attr('data-groups'));
-                  const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
-                  if (!isElementInCurrentGroup) {
-                    return false;
+                  
+                  if(shuffleInstance.group !== Shuffle.ALL_ITEMS){
+                     isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== 1;
                   }
-               }
+
+                  const dataButton = $('body').data('data-house');
+                  if(dataButton){
+                     const titleElement = $(container).attr('data-groups')
+                     const titleText = titleElement ? titleElement.toLowerCase().trim() : "";
+
+                     isElementInCurrentGroup &= titleText.indexOf(dataButton) !== -1;
+                  }
+
+                  const dataSearchValue = $('body').data('data-search')
+                  if(dataSearchValue){
+                     const titleElement = $(container).attr('data-title')
+                     const titleText = titleElement ? titleElement.toLowerCase().trim() : "";
+
+                     isElementInCurrentGroup &= titleText.indexOf(dataSearchValue) !== -1;
+                  }
+                  
+                  
+                  const radioFilter = $('body').data('filter-radio');
+                  if(radioFilter){
+                     isElementInCurrentGroup &= container.getAttribute('data-gender') == radioFilter;;
+                  }
+
+                  const rangeFilter = $('body').data('filter-range');
+                  if(rangeFilter){
+                     const valMin = parseFloat(rangeFilter.min);
+                     const valMax = parseFloat(rangeFilter.max);
+                     isElementInCurrentGroup &= $(container).attr('data-date-created') >= valMin
+                                                && $(container).attr('data-date-created') <= valMax            
+                  }
+
+                  const pairYearFilter = $('body').data('filter-radio-female')
+                  if(pairYearFilter){
+                     isElementInCurrentGroup &= $(container).attr('data-date-created')%2 == 0;
+                  }
+
+                  return isElementInCurrentGroup
+               })
             }
    })
 })

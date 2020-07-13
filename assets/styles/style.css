@@ -7,6 +7,10 @@ body{
   background-size: cover;
 }
 
+.container{
+  padding: 0;
+}
+
 img{
   width: 20%;
   display: block;
@@ -35,18 +39,23 @@ b{
   color: white;
 }
 
-.my-shuffle-container{
-  margin-top: 50px;
-}
-
 .card{
   color: white;
-  text-align: center;
   background-color: rgba(255, 255, 255, 0.2);
 }
 
+.card-body{
+  display: table;
+}
+
+.card-body > div {
+  width: 150px;
+  display: table-cell;
+  margin-left: auto;
+  margin-right: auto;
+}
 .card-title{
-  font-weight: bold
+  font-weight: bold;
 }
 
 .input-search{
