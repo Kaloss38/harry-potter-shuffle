@@ -96,7 +96,6 @@ $(document).ready(function(){
                   else{
                      $(this).addClass('active')
                      $('body').data('data-house', attrId);
-                     // shuffleInstance.group = attrId;
                      filter();
                      $('.radio [type=radio]').prop('checked', false)
                      $('#radio-pop').empty();
