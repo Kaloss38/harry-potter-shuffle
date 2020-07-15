@@ -46,6 +46,7 @@ $(document).ready(function(){
 
             const shuffleInstance = new Shuffle( container , options);
             
+            
             //Event radio filter
             $('.radio [type=radio]').change( function(){
                if($(this).prop('checked', true)){
@@ -53,7 +54,7 @@ $(document).ready(function(){
                   let radioValue = $(this).attr("value");
                   $('body').data('filter-radio', radioValue)
                   filter()
-                     if(radioValue == "female"){
+                     if(radioValue == "male"){
                         $('#radio-pop').empty();
                         $('#radio-pop').append(`
                         <div class="input-group" data-toggle="buttons">
@@ -65,7 +66,7 @@ $(document).ready(function(){
                         `)
                         $('#checkbox-pair').change( function(){
                            if($(this).prop('checked')){
-                              $('body').data('filter-radio-female', radioValue)
+                              $('body').data('filter-radio-male', radioValue)
                               filter();
                            }
                         })
@@ -81,9 +82,9 @@ $(document).ready(function(){
                   const attrId = $(this).attr('id')
                   if($(this).attr('id') == 'All'){
                      $(this).addClass('active');
-                     $('body').data('data-house', attrId);
+                     $('body').data('data-house', null);
                      shuffleInstance.group = attrId;
-                     shuffleInstance.filter();
+                     filter();
                      $('.radio [type=radio]').prop('checked', false);
                      $('#radio-pop').empty();
                   }
@@ -157,7 +158,7 @@ $(document).ready(function(){
                   if(dataButton){
                      const titleElement = $(container).attr('data-groups');
                      const titleText = titleElement ? titleElement.trim() : "";
-
+                     $('body').data('filter-radio-male', null)
                      isElementInCurrentGroup &= titleText.indexOf(dataButton) !== -1;
                   }
 
@@ -184,9 +185,12 @@ $(document).ready(function(){
                                                 && $(container).attr('data-date-created') <= valMax            
                   }
 
-                  const pairYearFilter = $('body').data('filter-radio-female')
-                  if(pairYearFilter && radioFilter == 'female'){
-                     isElementInCurrentGroup &= $(container).attr('data-date-created')%2 == 0;
+                  const pairYearFilter = $('body').data('filter-radio-male');
+                  if(pairYearFilter){
+                     if(pairYearFilter == 'male'){
+                        const gender = $(container).attr('data-gender')
+                        isElementInCurrentGroup &= gender == pairYearFilter && $(container).attr('data-date-created')%2 == 0;
+                     }
                   }
 
                   return isElementInCurrentGroup

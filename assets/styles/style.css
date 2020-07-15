@@ -46,6 +46,7 @@ b{
 
 .card-body{
   display: table;
+  text-align: center;
 }
 
 .card-body > div {
