@@ -52,6 +52,7 @@ $(document).ready(function(){
                if($(this).prop('checked', true)){
                   $('#radio-pop').empty();
                   let radioValue = $(this).attr("value");
+                  $('body').data('filter-radio-male', null);
                   $('body').data('filter-radio', radioValue)
                   filter()
                      if(radioValue == "male"){
@@ -82,6 +83,8 @@ $(document).ready(function(){
                   const attrId = $(this).attr('id')
                   if($(this).attr('id') == 'All'){
                      $(this).addClass('active');
+                     $('body').data('filter-radio', null);
+                     $('body').data('filter-radio-male', null);
                      $('body').data('data-house', null);
                      shuffleInstance.group = attrId;
                      filter();
@@ -90,6 +93,8 @@ $(document).ready(function(){
                   }
                   else{
                      $(this).addClass('active')
+                     $('body').data('filter-radio', null)
+                     $('body').data('filter-radio-male', null);
                      $('body').data('data-house', attrId);
                      shuffleInstance.group = attrId;
                      filter();
@@ -158,7 +163,7 @@ $(document).ready(function(){
                   if(dataButton){
                      const titleElement = $(container).attr('data-groups');
                      const titleText = titleElement ? titleElement.trim() : "";
-                     $('body').data('filter-radio-male', null)
+
                      isElementInCurrentGroup &= titleText.indexOf(dataButton) !== -1;
                   }
 
