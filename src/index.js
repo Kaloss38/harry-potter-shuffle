@@ -15,7 +15,7 @@ $(document).ready(function(){
                const houseCondition = data[i].house ? data[i].house : "inconnu";
                const yearOfBirthCondition = data[i].yearOfBirth ? data[i].yearOfBirth : "Inconnu";
                $(container).append(`
-                  <div class="card col-12" data-groups='["${houseCondition}"]' data-gender="${data[i].gender}" data-title="${data[i].name.toLowerCase()}" data-date-created="${data[i].yearOfBirth} style="display: table;" >
+                  <div class="card col-12" data-groups='["${houseCondition}"]' data-gender="${data[i].gender}" data-title="${data[i].name.toLowerCase()}" data-date-created="${data[i].yearOfBirth}">
                      <div class="card-body">
                         <div class="card-text">${data[i].name}</div>
                         <div class="card-text"> ${houseCondition}</div>
@@ -65,16 +65,8 @@ $(document).ready(function(){
                         `)
                         $('#checkbox-pair').change( function(){
                            if($(this).prop('checked')){
-                              shuffleInstance.filter(function(container){
-                                 if (shuffleInstance.group !== Shuffle.ALL_ITEMS) {
-                                    const groups = JSON.parse($(container).attr('data-groups'));
-                                    const isElementInCurrentGroup = groups.indexOf(shuffleInstance.group) !== -1;
-                                    if (!isElementInCurrentGroup) {
-                                      return false;
-                                    }
-                                 }
-                                 return container.getAttribute('data-date-created')%2 == 0;
-                              })
+                              $('body').data('filter-radio-female', radioValue)
+                              filter();
                            }
                         })
                      }
@@ -89,6 +81,8 @@ $(document).ready(function(){
                   const attrId = $(this).attr('id')
                   if($(this).attr('id') == 'All'){
                      $(this).addClass('active');
+                     $('body').data('data-house', attrId);
+                     shuffleInstance.group = attrId;
                      shuffleInstance.filter();
                      $('.radio [type=radio]').prop('checked', false);
                      $('#radio-pop').empty();
@@ -96,6 +90,7 @@ $(document).ready(function(){
                   else{
                      $(this).addClass('active')
                      $('body').data('data-house', attrId);
+                     shuffleInstance.group = attrId;
                      filter();
                      $('.radio [type=radio]').prop('checked', false)
                      $('#radio-pop').empty();
@@ -160,7 +155,7 @@ $(document).ready(function(){
 
                   const dataButton = $('body').data('data-house');
                   if(dataButton){
-                     const titleElement = $(container).attr('data-groups')
+                     const titleElement = $(container).attr('data-groups');
                      const titleText = titleElement ? titleElement.trim() : "";
 
                      isElementInCurrentGroup &= titleText.indexOf(dataButton) !== -1;
@@ -177,7 +172,8 @@ $(document).ready(function(){
                   
                   const radioFilter = $('body').data('filter-radio');
                   if(radioFilter){
-                     isElementInCurrentGroup &= container.getAttribute('data-gender') == radioFilter;;
+                     const gender = $(container).attr('data-gender')
+                     isElementInCurrentGroup &= gender == radioFilter;
                   }
 
                   const rangeFilter = $('body').data('filter-range');
@@ -189,7 +185,7 @@ $(document).ready(function(){
                   }
 
                   const pairYearFilter = $('body').data('filter-radio-female')
-                  if(pairYearFilter){
+                  if(pairYearFilter && radioFilter == 'female'){
                      isElementInCurrentGroup &= $(container).attr('data-date-created')%2 == 0;
                   }
 
